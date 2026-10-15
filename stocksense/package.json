@@ -1,0 +1,98 @@
+{
+  "name": "stocksense",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Local-first inventory intelligence for small businesses",
+  "author": "Sociverse",
+  "type": "module",
+  "main": "electron/main.mjs",
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "dev": "concurrently -k \"vite --host 127.0.0.1\" \"wait-on tcp:5173 && electron .\"",
+    "dev:web": "vite --host 127.0.0.1",
+    "typecheck": "tsc -b --pretty false",
+    "test": "node electron/smoke-runner.cjs",
+    "test:unit": "vitest run",
+    "build:web": "tsc -b && vite build",
+    "build": "pnpm run build:web && electron-builder",
+    "check": "pnpm run typecheck && pnpm run build:web && pnpm run test",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "better-sqlite3": "12.11.1",
+    "exceljs": "4.4.0",
+    "fuse.js": "7.1.0",
+    "lucide-react": "0.468.0",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "recharts": "3.5.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "7.6.13",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.1",
+    "concurrently": "9.2.1",
+    "electron": "42.5.0",
+    "electron-builder": "26.0.12",
+    "typescript": "5.9.3",
+    "vite": "8.1.0",
+    "vitest": "4.0.15",
+    "wait-on": "9.0.3"
+  },
+  "build": {
+    "appId": "tech.sociverse.stocksense",
+    "productName": "StockSense",
+    "asar": true,
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "speech/runtime",
+        "to": "speech"
+      },
+      {
+        "from": "speech/THIRD_PARTY_NOTICES.md",
+        "to": "speech/THIRD_PARTY_NOTICES.md"
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "category": "public.app-category.business",
+      "icon": "build/icon.png",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "StockSense uses the microphone only when you choose voice typing. Audio is transcribed on this device and then deleted."
+      },
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "StockSense-Setup-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "include": "build/installer.nsh",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "StockSense"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Office"
+    }
+  }
+}

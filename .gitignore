@@ -1,0 +1,47 @@
+# macOS artifacts
+__MACOSX/
+.DS_Store
+**/.DS_Store
+
+# Build and release outputs
+release/
+**/release/
+dist/
+**/dist/
+build/
+**/build/
+out/
+**/out/
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Database files
+*.sqlite
+**/*.sqlite
+*.sqlite-shm
+**/*.sqlite-shm
+*.sqlite-wal
+**/*.sqlite-wal
+
+# Backups and exports
+backups/
+**/backups/
+exports/
+**/exports/
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Logs
+*.log
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+
+# IDE settings
+.idea/
+.vscode/
